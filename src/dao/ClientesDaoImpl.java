@@ -33,7 +33,7 @@ public class ClientesDaoImpl implements ClientesDao {
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
             
-            pstm.setInt(1, getLastID());
+            pstm.setString(1, getLastID(cliente.getNomeCompanhia()));
             pstm.setString(2, cliente.getNomeCompanhia());  
             pstm.setString(3, cliente.getNomeContato());  
             pstm.setString(4, cliente.getTituloContato());  
@@ -67,8 +67,8 @@ public class ClientesDaoImpl implements ClientesDao {
     }
 
     @Override
-    public void deleteClientes(int IDCliente) {
-        String sql = "DELETE CLIENTES WHERE IDCLIENTE = ?";
+    public void deleteClientes(String IDCliente) {
+        String sql = "DELETE FROM CLIENTES WHERE IDCLIENTE = ?";
         
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -78,7 +78,7 @@ public class ClientesDaoImpl implements ClientesDao {
             pstm = conn.prepareStatement(sql);
             
             
-            pstm.setInt(1,IDCliente);
+            pstm.setString(1,IDCliente);
             pstm.execute();
         }
         catch(Exception e){
@@ -125,7 +125,7 @@ public class ClientesDaoImpl implements ClientesDao {
             pstm.setString(8, cliente.getPais());  
             pstm.setString(9, cliente.getTelefone());  
             pstm.setString(10, cliente.getFAX());  
-            pstm.setInt(11,cliente.getIDCliente());
+            pstm.setString(11, cliente.getIDCliente());
             pstm.execute();
         }
         catch(Exception e){
@@ -166,7 +166,7 @@ public class ClientesDaoImpl implements ClientesDao {
                 cli.setCidade(rset.getString("Cidade"));
                 cli.setEndereco(rset.getString("Endereco"));
                 cli.setFAX(rset.getString("FAX"));
-                cli.setIDCliente(rset.getInt("IDCliente"));
+                cli.setIDCliente(rset.getString("IDCliente"));
                 cli.setNomeCompanhia(rset.getString("NomeCompanhia"));
                 cli.setNomeContato(rset.getString("NomeContato"));
                 cli.setPais(rset.getString("Pais"));
@@ -202,7 +202,7 @@ public class ClientesDaoImpl implements ClientesDao {
     }
 
     @Override
-    public Clientes getClienteById(int IDCliente) {
+    public Clientes getClienteById(String IDCliente) {
         String sql = "SELECT * FROM CLIENTES WHERE IDCLIENTE = ?";        
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -211,7 +211,7 @@ public class ClientesDaoImpl implements ClientesDao {
         try{
             conn = ConnectionFactory.createConnectionToMySQL();
             pstm = conn.prepareStatement(sql);
-            pstm.setInt(1,IDCliente);
+            pstm.setString(1,IDCliente);
             
             rset = pstm.executeQuery();
             
@@ -221,13 +221,13 @@ public class ClientesDaoImpl implements ClientesDao {
                 cli.setCidade(rset.getString("Cidade"));
                 cli.setEndereco(rset.getString("Endereco"));
                 cli.setFAX(rset.getString("FAX"));
-                cli.setIDCliente(rset.getInt("IDCliente"));
+                cli.setIDCliente(rset.getString("IDCliente"));
                 cli.setNomeCompanhia(rset.getString("NomeCompanhia"));
                 cli.setNomeContato(rset.getString("NomeContato"));
                 cli.setPais(rset.getString("Pais"));
                 cli.setTelefone(rset.getString("Telefone"));
                 cli.setRegiao(rset.getString("Regiao"));
-                cli.setTituloContato(rset.getString("TituloContat"));                
+                cli.setTituloContato(rset.getString("TituloContato"));                
                 return cli;
             }
             
@@ -257,8 +257,16 @@ public class ClientesDaoImpl implements ClientesDao {
     
   
     @Override
-    public int getLastID(){
-         String sql = "SELECT MAX(IDCLIENTE) AS ULTIMO FROM CLIENTES";        
+    public String getLastID(String nome){
+        return  nome.replace(" ", "").substring(0, 4);        
+    }
+
+    @Override
+    public List<String> getAllIDClientes() {
+        
+        List<String> result = new ArrayList<String>();
+        String sql = "SELECT IDCliente FROM CLIENTES";
+               
         Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet rset = null;
@@ -268,10 +276,9 @@ public class ClientesDaoImpl implements ClientesDao {
             pstm = conn.prepareStatement(sql);
             rset = pstm.executeQuery();
             
-            while(rset.next()){                              
-                return rset.getInt("ULTIMO");
+            while(rset.next()){
+               result.add(rset.getString("IDCliente"));               
             }
-            
         }
         catch(Exception e){
             e.printStackTrace();
@@ -292,7 +299,6 @@ public class ClientesDaoImpl implements ClientesDao {
                 ex.printStackTrace();
             }
         }  
-        
-        return -1;
+        return result;
     }
 }

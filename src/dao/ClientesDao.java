@@ -14,9 +14,10 @@ import model.Clientes;
  */
 public interface ClientesDao {
     public void addClientes(Clientes cliente);
-    public void deleteClientes (int IDCliente);
+    public void deleteClientes (String IDCliente);
     public void updateClientes (Clientes cliente);
     public List<Clientes> getAllClientes();
-    public Clientes getClienteById(int IDCliente);
-    public int getLastID();
+    public List<String> getAllIDClientes();
+    public Clientes getClienteById(String IDCliente);    
+    public String getLastID(String nome);
 }

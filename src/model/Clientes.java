@@ -14,7 +14,7 @@ public class Clientes {
     private String Cidade;
     private String Endereco;
     private String FAX;
-    private int    IDCliente;
+    private String IDCliente;
     private String NomeCompanhia;
     private String NomeContato;
     private String Pais;
@@ -54,11 +54,11 @@ public class Clientes {
         this.FAX = FAX;
     }
 
-    public int getIDCliente() {
+    public String getIDCliente() {
         return IDCliente;
     }
 
-    public void setIDCliente(int IDCliente) {
+    public void setIDCliente(String IDCliente) {
         this.IDCliente = IDCliente;
     }
 
@@ -112,7 +112,7 @@ public class Clientes {
     
     public Clientes(){}
 
-    public Clientes(String CEP, String Cidade, String Endereco, String FAX, int IDCliente, String NomeCompanhia, String NomeContato, String Pais, String Regiao, String Telefone, String TituloContato) {
+    public Clientes(String CEP, String Cidade, String Endereco, String FAX, String IDCliente, String NomeCompanhia, String NomeContato, String Pais, String Regiao, String Telefone, String TituloContato) {
         this.CEP = CEP;
         this.Cidade = Cidade;
         this.Endereco = Endereco;
